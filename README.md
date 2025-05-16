@@ -1,33 +1,64 @@
-TO Do App
+# TODO Task-Tracking Application (Multi-User)
 
-Develop a TODO task-tracking application that allows its users to maintain TODO lists. TODO tasks in the list can have a deadline and tags for easier grouping and management. You can demonstrate the working of the application using a driver program or necessary test cases. There is no requirement to use a database for persistence (instead, use memory to store data).
-Features-
-Users should be able to update the TODO list at any point in time add, modify, and remove tasks.
-The application should support multiple users being able to update their todo tasks.
-A task can be marked as completed and once it is completed, it is automatically removed from the TODO list.
-Tasks can also be added to appear in the TODO list at a future date. Users should be able to query this task as per the filters applied.
-Users should be able to see an activity log that describes additions, modifications, completions and removals of tasks from the TODO list during a particular time period.
-Users should also be able to see statistics around how many tasks were added. completed, and spilled over the deadline during a particular time period.
+This is an in-memory TODO Task Tracking Application built using **JavaScript**, following Object-Oriented Design principles and using design patterns like **Factory**, **Repository**, and **Strategy** where applicable. The application supports **multiple users**, each maintaining their own set of tasks.
 
-Implementation requirements
+---
 
-Your solution should implement the following functions. Feel free to use the representation for objects you deem fit for the problem and the provided use cases.
+## 🧩 Features
 
-addTask (task)
-getTask (taskid) -> a task
-modifyTask (task)
-removeTask (taskId)
-listTasks (.) -> a list of tasks that match the given filter order based on defined sort criteria
-getStatistics (optional[timePeriod]) -> statistics for the given time period(if supplied)
-getActivityLog (optional [timePeriod]) -> activity log for the given time period (if supplied)
+- ✅ Add, modify, and remove tasks at any time.
+- 👥 Multiple users supported — each has an independent TODO list.
+- 📅 Tasks can have deadlines, start dates, and tags.
+- ⏳ Tasks can be scheduled to appear in the TODO list in the future.
+- 📂 Query tasks by filters such as `tag` and `startDate`.
+- 📜 Activity logs for each user, filtered by time period.
+- 📊 Task statistics: number of tasks added, completed, and missed (deadline spillover).
+- 🧠 Built with clean separation of concerns and design patterns.
 
-Evaluation Criteria:
-Completeness of functional requirements
-Application of OO design principles
-Code efficiency
-Code readability and maintainability
-Testability
-Handling corner cases
-Language proficiency
-Use design patterns and seperation of concerns and oops concept
-Do ciloding in javascript
+---
+
+## 🏗️ Architecture Overview
+
+- **TaskManager**: Manages a user's tasks (add, remove, modify, etc.).
+- **TodoApp**: Application-level controller for managing users and delegating task operations.
+- **Task**: Core model containing task data and behavior.
+- **TaskFactory**: Implements the Factory Pattern for creating tasks.
+- **Repositories**: Abstracts storage for users/tasks (e.g., in-memory).
+- **Logger**: Tracks task activity.
+- **StatisticsService**: Computes and returns stats for any given time period.
+
+---
+
+## 🔧 Key Classes and Interfaces
+
+### `Task`
+
+Represents a single task with:
+
+- `id`, `title`, `deadline`, `startDate`
+- `status`: PENDING or COMPLETED
+- `tags`: array of strings
+- `createdAt`, `updatedAt`
+
+### `TaskManager`
+
+Manages a single user's tasks:
+
+- `addTask`, `getTask`, `modifyTask`, `removeTask`
+- `listTasks({ tags, includeFuture })`
+- `getActivityLog(start, end)`
+- `getStatistics(start, end)`
+
+### `TodoApp`
+
+Entry point of the app:
+
+- Adds users
+- Delegates operations to the correct user’s `TaskManager`
+
+### `InMemoryUserTaskRepository`
+
+- Maintains mapping of `userId → TaskManager`
+- Allows easy switch to external DB in future
+
+---
